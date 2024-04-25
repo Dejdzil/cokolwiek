@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class BirdController : MonoBehaviour
 {
     public float JumpikForcik;
+    public float MaxVelocity;
     public Rigidbody2D ABCDEFG;
 
     public int points;
@@ -48,7 +49,13 @@ public class BirdController : MonoBehaviour
             audioSource.Play();
 
             animator.SetTrigger("FlapWings");
+            ABCDEFG.velocity = Vector2.zero;
             ABCDEFG.AddForce(new Vector2(0, JumpikForcik), ForceMode2D.Impulse);
+        }
+
+        if (ABCDEFG.velocity.y >MaxVelocity)
+        {
+            ABCDEFG.velocity = new Vector2(0, MaxVelocity);
         }
     }
 
