@@ -12,6 +12,12 @@ public class BirdController : MonoBehaviour
     public static bool GameOver;
     public static bool HasStarted;
     public GameObject gameOverScreen;
+    public Animator animator;
+    public AudioSource audioSource;
+
+    public AudioClip jumpSound;
+    public AudioClip scoreSound;
+    public AudioClip HitSound;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +43,11 @@ public class BirdController : MonoBehaviour
                 ABCDEFG.gravityScale = 1f;
 
             }
+
+            audioSource.clip = jumpSound;
+            audioSource.Play();
+
+            animator.SetTrigger("FlapWings");
             ABCDEFG.AddForce(new Vector2(0, JumpikForcik), ForceMode2D.Impulse);
         }
     }
@@ -46,6 +57,14 @@ public class BirdController : MonoBehaviour
         Debug.Log("Die!");
         GameOver = true;
         gameOverScreen.SetActive(true);
+
+        audioSource.clip = HitSound;
+        audioSource.Play();
+
+        if (points > PlayerPrefs.GetInt("HighScore"))
+        {
+            PlayerPrefs.SetInt("HighScore", points);    
+        }
         
     }
 
@@ -53,6 +72,8 @@ public class BirdController : MonoBehaviour
     {
         if(collision.CompareTag("PointZone"))
         {
+            audioSource.clip = scoreSound;
+            audioSource.Play();
             points++;
         }
     }
